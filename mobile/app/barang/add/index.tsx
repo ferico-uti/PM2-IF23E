@@ -1,10 +1,13 @@
-import { View, Text, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import { Strings } from "@/constants/strings";
 import { styles } from "@/styles/barang";
-import { Button, TextInput } from "react-native-paper";
+import { filterHargaRaw, filterKode, filterNama, formatRibuan } from "@/utils/scripts";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Dropdown } from "react-native-element-dropdown";
+import axios from "axios";
 import { router } from "expo-router";
+import React, { useRef, useState } from "react";
+import { Keyboard, StyleSheet, Text, View } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
+import { Button, Snackbar, TextInput } from "react-native-paper";
 
 const data = [
   { label: "UNIT", value: "Unit" },
@@ -23,15 +26,70 @@ export default function BarangAddPage() {
   const [textKode, setTextKode] = useState("");
   const [textNama, setTextNama] = useState("");
   const [textHarga, setTextHarga] = useState("");
+  const [textHargaRaw, setTextHargaRaw] = useState(0);
   // buat state untuk satuan
   const [value, setValue] = useState(null);
+
+  // buat state untuk snackbar
+  const [visibleSnackbar, setVisibleSnackbar] = useState(false);
+
+  // buat useRef untuk menampilkan respon simpan data
+  const messageResponse = useRef("");
+
+  // buat useRef untuk focus ke TextInput Kode Barang
+  const refFocus = useRef<any>(null);
+
+
+  // buat fungsi untuk hide snackbar
+  const hideSnackbar = () => setVisibleSnackbar(false);
+
+  // buat fungsi untuk simpan data
+  const saveData = async () => {
+    // jika tidak error
+    try {
+      const response = await axios.post(Strings.api_barang, {
+        kode: textKode,
+        nama: textNama,
+        harga: textHargaRaw,
+        satuan: value,
+      });
+
+      // jika success == true
+      if (response.data.success) {
+        // reset form
+        setTextKode("");
+        setTextNama("");
+        setTextHarga("");
+        setTextHargaRaw(0);
+        setValue(null);
+
+        // pilih salah 1 opsi berikut setelah simpan data berhasil
+        // 1. hilangkan focus
+        // Keyboard.dismiss();
+        // 2. alihkan focus ke TextInput Kode Barang
+        refFocus.current.focus();
+
+      }
+      // isi respon
+      messageResponse.current = response.data.message;
+    }
+    // jika terjadi error
+    catch {
+      // isi respon
+      messageResponse.current = "Gagal Kirim Data !";
+    }
+    finally {
+      // tampilkan snackbar
+      setVisibleSnackbar(true);
+    }
+  }
 
   const renderItem = (item: DropdownItem) => {
     return (
       <View style={styles_dropdown.item}>
         <Text style={styles_dropdown.textItem}>{item.label}</Text>
         {item.value === value && (
-          
+
           <MaterialIcons
             style={styles_dropdown.icon}
             name="check"
@@ -60,7 +118,11 @@ export default function BarangAddPage() {
         style={styles.text_input}
         maxLength={15}
         value={textKode}
-        onChangeText={(text) => setTextKode(text)}
+        ref={refFocus}
+        onChangeText={(text) => {
+          const result = filterKode(text);
+          setTextKode(result);
+        }}
       />
 
       {/* area nama */}
@@ -69,7 +131,10 @@ export default function BarangAddPage() {
         style={styles.text_input}
         maxLength={50}
         value={textNama}
-        onChangeText={(text) => setTextNama(text)}
+        onChangeText={(text) => {
+          const result = filterNama(text);
+          setTextNama(result);
+        }}
       />
 
       {/* area harga */}
@@ -78,7 +143,13 @@ export default function BarangAddPage() {
         style={styles.text_input}
         maxLength={11}
         value={textHarga}
-        onChangeText={(text) => setTextHarga(text)}
+        keyboardType="number-pad"
+        onChangeText={(text) => {
+          const result = formatRibuan(text);
+          const result_raw = filterHargaRaw(text);
+          setTextHarga(result);
+          setTextHargaRaw(Number(result_raw));
+        }}
       />
 
       {/* area satuan */}
@@ -101,7 +172,7 @@ export default function BarangAddPage() {
             setValue(item.value);
           }}
           // renderLeftIcon={() => (
-         
+
           //   <MaterialIcons
           //     style={styles_dropdown.icon}
           //     name="search"
@@ -124,7 +195,7 @@ export default function BarangAddPage() {
         <Button
           icon="check"
           mode="contained"
-          onPress={() => console.log("Pressed")}>
+          onPress={saveData}>
           Simpan
         </Button>
 
@@ -135,6 +206,11 @@ export default function BarangAddPage() {
           Batal
         </Button>
       </View>
+
+      {/* area snackbar (respon simpan data) */}
+      <Snackbar visible={visibleSnackbar} onDismiss={hideSnackbar}>
+        {messageResponse.current}
+      </Snackbar>
     </View>
   );
 }

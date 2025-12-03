@@ -1,5 +1,11 @@
-import { View, StyleSheet, FlatList } from "react-native";
+import { Strings } from "@/constants/strings";
+import { styles } from "@/styles/barang";
+import { formatRupiah } from "@/utils/scripts";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import axios from "axios";
+import { router } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
+import { FlatList, View } from "react-native";
 import {
   Button,
   Card,
@@ -10,12 +16,6 @@ import {
   Text,
   TextInput,
 } from "react-native-paper";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import axios from "axios";
-import { Strings } from "@/constants/strings";
-import { formatRupiah } from "@/utils/scripts";
-import { router } from "expo-router";
-import { styles } from "@/styles/barang";
 
 export default function BarangViewPage() {
   const [visible, setVisible] = useState(false);
@@ -25,8 +25,6 @@ export default function BarangViewPage() {
   const hideDialog = () => setVisible(false);
 
   const [visibleSnackbar, setVisibleSnackbar] = useState(false);
-
-  const showSnackbar = () => setVisibleSnackbar(true);
 
   const hideSnackbar = () => setVisibleSnackbar(false);
 
@@ -185,7 +183,7 @@ export default function BarangViewPage() {
 
       <FAB
         icon="plus"
-        color="#fff"
+        color="#000"
         mode="flat"
         style={styles.fab}
         onPress={() => router.push("/barang/add")}
