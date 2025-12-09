@@ -117,7 +117,7 @@ export default function BarangViewPage() {
       {/* area header */}
       <View style={styles.header_area}>
         <Text style={styles.header_title}>
-          View Data Barang
+          Tampil Data Barang
         </Text>
       </View>
 
