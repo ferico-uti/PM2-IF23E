@@ -5,7 +5,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import axios from "axios";
 import { router } from "expo-router";
 import React, { useRef, useState } from "react";
-import { Keyboard, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { Button, Snackbar, TextInput } from "react-native-paper";
 
