@@ -39,12 +39,47 @@ export default function BarangAddPage() {
   // buat useRef untuk focus ke TextInput Kode Barang
   const refFocus = useRef<any>(null);
 
-
   // buat fungsi untuk hide snackbar
   const hideSnackbar = () => setVisibleSnackbar(false);
 
+  // buat state untuk cek error (jika ada salah komponen tidak diisi)
+  // bentuk state berupa objek  
+  const [error, setError] = useState<{
+    kode: boolean;
+    nama: boolean;
+    harga: boolean;
+    satuan: boolean;
+  }>({
+    kode: false,
+    nama: false,
+    harga: false,
+    satuan: false,
+  });
+
   // buat fungsi untuk simpan data
   const saveData = async () => {
+    // buat object errorStatus untuk menampung kondisi error setiap komponen
+    const errorStatus = {
+      kode: textKode === "",
+      nama: textNama === "",
+      harga: textHarga === "",
+      satuan: value === null,
+    };
+
+    // update kondisi error setiap komponen
+    setError(errorStatus);
+
+    const hasError =
+      errorStatus.kode ||
+      errorStatus.nama ||
+      errorStatus.harga ||
+      errorStatus.satuan;
+
+    // jika ada salah satu komponen tidak diisi
+    if (hasError) {
+      return;
+    }
+
     // jika tidak error
     try {
       const response = await axios.post(Strings.api_barang, {
@@ -108,9 +143,23 @@ export default function BarangAddPage() {
         justifyContent: "flex-start",
         backgroundColor: "#fff",
       }}>
-      <Text style={[styles.warna_bg, styles.jarak, { textAlign: "center" }]}>
-        Halaman Tambah Data Barang
-      </Text>
+
+      {/* area header */}
+      <View style={styles.header_area}>
+        <MaterialIcons
+          name="arrow-back"
+          size={24}
+          style={styles.back_button}
+          onPress={() => {
+            router.back();
+          }}
+        />
+
+        <Text style={styles.header_title}>
+          Tambah Data Barang
+        </Text>
+      </View>
+
 
       {/* area kode */}
       <TextInput
@@ -125,6 +174,19 @@ export default function BarangAddPage() {
         }}
       />
 
+      {/* tampilkan error jika kode barang belum diisi */}
+      {error.kode && (
+        <View style={styles.error_area}>
+          <MaterialIcons
+            name="info-outline"
+            size={16}
+            color="#ff0000"
+          />
+          <Text style={styles.error}>
+            Kode Barang Harus Diisi !</Text>
+        </View>
+      )}
+
       {/* area nama */}
       <TextInput
         label="Nama Barang"
@@ -136,6 +198,19 @@ export default function BarangAddPage() {
           setTextNama(result);
         }}
       />
+
+      {/* tampilkan error jika nama barang belum diisi */}
+      {error.nama && (
+        <View style={styles.error_area}>
+          <MaterialIcons
+            name="info-outline"
+            size={16}
+            color="#ff0000"
+          />
+          <Text style={styles.error}>
+            Nama Barang Harus Diisi !</Text>
+        </View>
+      )}
 
       {/* area harga */}
       <TextInput
@@ -151,6 +226,19 @@ export default function BarangAddPage() {
           setTextHargaRaw(Number(result_raw));
         }}
       />
+
+      {/* tampilkan error jika harga barang belum diisi */}
+      {error.harga && (
+        <View style={styles.error_area}>
+          <MaterialIcons
+            name="info-outline"
+            size={16}
+            color="#ff0000"
+          />
+          <Text style={styles.error}>
+            Harga Barang Harus Diisi !</Text>
+        </View>
+      )}
 
       {/* area satuan */}
       <View style={styles.satuan_area}>
@@ -183,6 +271,19 @@ export default function BarangAddPage() {
           renderItem={renderItem}
         />
       </View>
+
+      {/* tampilkan error jika satuan barang belum diisi */}
+      {error.satuan && (
+        <View style={styles.error_area}>
+          <MaterialIcons
+            name="info-outline"
+            size={16}
+            color="#ff0000"
+          />
+          <Text style={styles.error}>
+            Satuan Barang Harus Dipilih !</Text>
+        </View>
+      )}
 
       {/* area tombol */}
       <View

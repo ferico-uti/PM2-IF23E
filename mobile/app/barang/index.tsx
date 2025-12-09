@@ -115,9 +115,11 @@ export default function BarangViewPage() {
       {/* contoh internal */}
 
       {/* area header */}
-      <Text style={[styles.warna_bg, styles.jarak, { textAlign: "center" }]}>
-        Halaman View Barang
-      </Text>
+      <View style={styles.header_area}>
+        <Text style={styles.header_title}>
+          View Data Barang
+        </Text>
+      </View>
 
       {/* area pencarian */}
       <TextInput

@@ -16,3 +16,4 @@
 
 - 01/12/2025 - Penambahan Fitur Detail Data (API).
 - 02/12/2025 - Save Data. 
+- 08/12/2025 - Error Handling (Save Data) & Back Button. 
