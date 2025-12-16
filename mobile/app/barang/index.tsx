@@ -171,7 +171,7 @@ export default function BarangViewPage() {
 
               <Button
                 style={{ backgroundColor: "#e3e3e3" }}
-                onPress={() => console.log("Edit")}>
+                onPress={() => router.push(`/barang/edit/${item.id}`)}>
                 <MaterialIcons name="edit" size={24} color="black" />
               </Button>
             </Card.Actions>

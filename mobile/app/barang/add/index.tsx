@@ -1,11 +1,11 @@
 import { Strings } from "@/constants/strings";
-import { styles } from "@/styles/barang";
+import { styles, styles_dropdown } from "@/styles/barang";
 import { filterHargaRaw, filterKode, filterNama, formatRibuan } from "@/utils/scripts";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import axios from "axios";
 import { router } from "expo-router";
 import React, { useRef, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { Button, Snackbar, TextInput } from "react-native-paper";
 
@@ -69,11 +69,13 @@ export default function BarangAddPage() {
     // update kondisi error setiap komponen
     setError(errorStatus);
 
-    const hasError =
-      errorStatus.kode ||
-      errorStatus.nama ||
-      errorStatus.harga ||
-      errorStatus.satuan;
+    // const hasError =
+    //   errorStatus.kode ||
+    //   errorStatus.nama ||
+    //   errorStatus.harga ||
+    //   errorStatus.satuan;
+
+    const hasError = Object.values(errorStatus).includes(true);
 
     // jika ada salah satu komponen tidak diisi
     if (hasError) {
@@ -316,51 +318,3 @@ export default function BarangAddPage() {
   );
 }
 
-// setup internal style (untuk dropdown)
-const styles_dropdown = StyleSheet.create({
-  dropdown: {
-    margin: 0,
-    height: 50,
-    backgroundColor: "white",
-    borderRadius: 0,
-    padding: 16,
-    borderBottomWidth: 1,
-    borderColor: "#a3a3a3",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.9,
-    shadowRadius: 1.41,
-
-    // elevation: 2,
-  },
-  icon: {
-    marginRight: 5,
-  },
-  item: {
-    padding: 17,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  textItem: {
-    flex: 1,
-    fontSize: 16,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
-  },
-});
