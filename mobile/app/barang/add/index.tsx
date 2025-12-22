@@ -1,3 +1,4 @@
+import CustomHeader from "@/components/ui/custom/CustomHeader";
 import { Strings } from "@/constants/strings";
 import { styles, styles_dropdown } from "@/styles/barang";
 import { filterHargaRaw, filterKode, filterNama, formatRibuan } from "@/utils/scripts";
@@ -147,20 +148,10 @@ export default function BarangAddPage() {
       }}>
 
       {/* area header */}
-      <View style={styles.header_area}>
-        <MaterialIcons
-          name="arrow-back"
-          size={24}
-          style={styles.back_button}
-          onPress={() => {
-            router.back();
-          }}
-        />
-
-        <Text style={styles.header_title}>
-          Tambah Data Barang
-        </Text>
-      </View>
+      {/* panggil reusable component CustomHeader 
+          (components/custom/CustomHeader.tsx)
+      */}
+      <CustomHeader title="Tambah Data Barang" iconBack={true} />
 
 
       {/* area kode */}

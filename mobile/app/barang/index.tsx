@@ -1,3 +1,4 @@
+import CustomHeader from "@/components/ui/custom/CustomHeader";
 import { Strings } from "@/constants/strings";
 import { styles } from "@/styles/barang";
 import { formatRupiah } from "@/utils/scripts";
@@ -115,11 +116,10 @@ export default function BarangViewPage() {
       {/* contoh internal */}
 
       {/* area header */}
-      <View style={styles.header_area}>
-        <Text style={styles.header_title}>
-          Tampil Data Barang
-        </Text>
-      </View>
+      {/* panggil reusable component CustomHeader 
+          (components/custom/CustomHeader.tsx)
+      */}
+      <CustomHeader title="Tampil Data Barang" iconBack={false} />
 
       {/* area pencarian */}
       <TextInput

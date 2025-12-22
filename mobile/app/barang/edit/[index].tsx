@@ -1,3 +1,4 @@
+import CustomHeader from '@/components/ui/custom/CustomHeader';
 import { Strings } from '@/constants/strings';
 import { styles, styles_dropdown } from '@/styles/barang';
 import { filterHargaRaw, filterKode, filterNama, formatRibuan, formatRupiah } from '@/utils/scripts';
@@ -171,20 +172,7 @@ export default function BarangEditPage() {
             }}>
 
             {/* area header */}
-            <View style={styles.header_area}>
-                <MaterialIcons
-                    name="arrow-back"
-                    size={24}
-                    style={styles.back_button}
-                    onPress={() => {
-                        router.back();
-                    }}
-                />
-
-                <Text style={styles.header_title}>
-                    Ubah Data Barang
-                </Text>
-            </View>
+            <CustomHeader title="Ubah Data Barang" iconBack={true} />
 
             {/* area kode */}
             <TextInput
