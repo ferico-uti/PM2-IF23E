@@ -1,3 +1,4 @@
+import CustomButton from "@/components/ui/custom/CustomButton";
 import CustomHeader from "@/components/ui/custom/CustomHeader";
 import { Strings } from "@/constants/strings";
 import { styles, styles_dropdown } from "@/styles/barang";
@@ -9,6 +10,7 @@ import React, { useRef, useState } from "react";
 import { Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { Button, Snackbar, TextInput } from "react-native-paper";
+import * as Notifications from "expo-notifications";
 
 const data = [
   { label: "UNIT", value: "Unit" },
@@ -94,6 +96,22 @@ export default function BarangAddPage() {
 
       // jika success == true
       if (response.data.success) {
+        // tampiikan notifikasi
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: "Informasi",
+            body: response.data.message,
+          },
+          // jika notifikasi ingin tanpa delay
+          trigger: null,
+
+          // jika notifikasi ingin delay (misal 5 detik)
+          // trigger: {
+          //   type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+          //   seconds: 5
+          // },
+        });
+
         // reset form
         setTextKode("");
         setTextNama("");
@@ -151,7 +169,7 @@ export default function BarangAddPage() {
       {/* panggil reusable component CustomHeader 
           (components/custom/CustomHeader.tsx)
       */}
-      <CustomHeader title="Tambah Data Barang" iconBack={true} />
+      <CustomHeader title="Tambah Data Barang" iconBack={true} onPress={() => router.back()} />
 
 
       {/* area kode */}
@@ -286,12 +304,7 @@ export default function BarangAddPage() {
           marginTop: 20,
           gap: 10,
         }}>
-        <Button
-          icon="check"
-          mode="contained"
-          onPress={saveData}>
-          Simpan
-        </Button>
+        <CustomButton icon="check" title="Simpan" onPress={saveData} />
 
         <Button
           icon="close"

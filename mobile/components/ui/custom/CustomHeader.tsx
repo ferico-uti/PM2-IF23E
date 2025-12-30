@@ -10,10 +10,12 @@ type CustomHeaderProps = {
     title: string;
 
     // xyz? = optional ditambahkan saat diakses
-    iconBack?: boolean;   
+    iconBack?: boolean;  
+    
+    onPress?: () => void
 };
 
-export default function CustomHeader({ title, iconBack = false }: CustomHeaderProps) {
+export default function CustomHeader({ iconBack = false, title, onPress }: CustomHeaderProps) {
     return (
         <View style={styles.header_area}>
             {iconBack && (
@@ -21,7 +23,7 @@ export default function CustomHeader({ title, iconBack = false }: CustomHeaderPr
                     name="arrow-back"
                     size={24}
                     style={styles.back_button}
-                    onPress={() => router.back()}
+                    onPress={onPress}
                 />
             )}
 

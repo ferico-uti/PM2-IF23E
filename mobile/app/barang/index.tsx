@@ -119,7 +119,7 @@ export default function BarangViewPage() {
       {/* panggil reusable component CustomHeader 
           (components/custom/CustomHeader.tsx)
       */}
-      <CustomHeader title="Tampil Data Barang" iconBack={false} />
+      <CustomHeader title="Tampil Data Barang" />
 
       {/* area pencarian */}
       <TextInput

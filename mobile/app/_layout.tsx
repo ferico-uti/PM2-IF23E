@@ -1,9 +1,9 @@
 import { Stack } from 'expo-router';
-import 'react-native-reanimated';
 import { DefaultTheme, PaperProvider } from 'react-native-paper';
+import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
 import { StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -19,7 +19,6 @@ const theme = {
 };
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
 
   return (
     // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -31,14 +30,20 @@ export default function RootLayout() {
     // </ThemeProvider>
 
     <PaperProvider theme={theme}>
-      {/* hilangkan header */}
-      <Stack screenOptions={{
-        headerShown: false
-      }}></Stack>
+      {/* tambahkan SafeAreaView */}
+      <SafeAreaView style={{
+        flex: 1,
+        backgroundColor: '#a51c31'
+      }}>
+        {/* hilangkan header */}
+        <Stack screenOptions={{
+          headerShown: false
+        }}></Stack>
 
-      {/* buat status bar */}
-      <StatusBar barStyle={"light-content"} backgroundColor={"#a51c31"}/>
+        {/* buat status bar */}
+        <StatusBar barStyle={"light-content"} backgroundColor={"#a51c31"} />
+      </SafeAreaView>
     </PaperProvider>
-    
+
   );
 }
